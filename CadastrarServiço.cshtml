@@ -1,0 +1,90 @@
+﻿
+@{
+    string nomeArquivo = "";
+    string ext = "";
+  
+
+
+    Validation.RequireField("descricao", "A descrição do serviço é obrigatorio");
+    Validation.RequireField("observacao", "A observação do serviço é obrigatorio");
+    Validation.RequireField("valor", "O valor do serviço é obrigatorio");
+
+
+    if (IsPost && Validation.IsValid())
+    {
+
+
+        var db = WebMatrix.Data.Database.Open("SCS");
+        var Sql = "insert into SERVICO(Descricao, Observacao, Valor) values(@0, @1, @2)";
+        int result = db.Execute(Sql, Request.Form["Descricao"], Request.Form["Observacao"], Request.Form["Valor"].AsDecimal());
+        db.Close();
+        if (result == 1)
+        {
+            Response.Redirect("~/Serviço");
+        }
+
+    }
+
+
+    Page.Title = "Página Detalhe";
+    Layout = "_Layout.cshtml";
+
+
+}
+@nomeArquivo
+@ext
+@Html.ValidationSummary()
+
+
+
+        <div class="container">
+            <div class="col-md-10 col-md-offset-0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <h2> Adicionar Serviço</h2>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        <tr>
+                            <td>
+                                <form method="post" action="">
+                                    <form class="form-horizontal">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2" for="descricao">Descrição:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="descricao" id="descricao" placeholder="informe o nome do serviço...">
+                                                <br />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2" for="valor">Valor:</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" name="valor" id="valor" placeholder="Informe o valor...">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2" for="observacao">Observação:</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" name="observacao" id="observacao" placeholder="informe a observação...">
+                                                <div class="form-group">
+                                                    <div class="col-sm-offset-2 col-sm-10">
+                                                        <br />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                           
+                                           
+
+
+                                <div style="text-align: right">
+                                    <button type="submit" class="btn btn-success" onclick="alert('Cadastro Salvo com Sucesso!')" name="submit">Salvar</button>
+
+                                    <a href="~/Serviço.cshtml"><button type="button" class="btn btn-default ">Cancelar</button></a>
+                                </div>
+
+
+

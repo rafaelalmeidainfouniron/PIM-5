@@ -1,0 +1,98 @@
+﻿@{
+    Layout = "_Layout.cshtml";
+    string id_serv = Request.QueryString["id"];
+    if (id_serv == null)
+    {
+        Response.Redirect("/");
+    }
+
+    var conexão = WebMatrix.Data.Database.Open("SCS");
+
+    dynamic servico = null;
+
+    try
+    {
+        servico = conexão.QuerySingle("SELECT * from Servico where id_serv=@0", id_serv);
+    }
+
+    catch (System.Data.SqlClient.SqlException)
+    {
+        Response.SetStatus(HttpStatusCode.NotFound);
+        Response.End();
+    }
+
+    if (IsPost)
+    {
+        var db = WebMatrix.Data.Database.Open("SCS");
+        var Sql = ("delete from Servico where id_serv=@3");
+        int result = db.Execute(Sql,
+            Request.Form["descricao"],
+            Request.Form["valor"].AsDecimal(), 
+            Request.Form["observacao"],
+           
+            Request.QueryString["id"]
+            );
+        db.Close();
+
+
+        if (result > 0)
+        {
+            Response.Redirect("~/Serviço.cshtml");
+        }
+    }
+
+
+}
+
+
+
+
+
+<form method="post" action="">
+
+    <h2>Deseja realmente remover o Serviço?</h2>
+    <div class="container">
+        <div class="col-md-9 col-md-offset-0">
+            <table class="table">
+                <thead>
+                    <tr></tr>
+                </thead>
+                <tbody>
+
+
+                    <tr>
+                        <td>
+                            <form method="post" action="" enctype="multipart/form-data">
+
+
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="descricao">Descrição:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="descricao" id="descricao" value="@servico.descricao" />
+                                            <br />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="valor">Valor:</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="valor" id="valor" value="@servico.valor" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="observacao">Observação:</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="observacao" id="observacao" value="@servico.observacao" />
+                                            <br />
+                                        </div>
+                                    </div>
+                                   
+                                    <div style="text-align: right">
+                                        <button type="submit" class="btn btn-danger" onclick="alert('Serviço Excluido com Sucesso!')" name="submit">Excluir</button>
+                                        <a href="~/Serviço.cshtml"><button type="button" class="btn btn-default ">Cancelar</button></a>
+
+                                    </div>
+                                    </div>
+                                </form>
+
+                            </form>

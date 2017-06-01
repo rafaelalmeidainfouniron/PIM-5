@@ -1,0 +1,187 @@
+﻿@{
+    Layout = "_Layout.cshtml";
+    string id_cli = Request.QueryString["id"];
+    if (id_cli == null)
+    {
+        Response.Redirect("/");
+    }
+
+    var conexão = WebMatrix.Data.Database.Open("SCS");
+
+    dynamic cliente = null;
+
+    try
+    {
+        cliente = conexão.QuerySingle("SELECT * from Cliente where id_cli=@0", id_cli);
+
+    }
+
+    catch (System.Data.SqlClient.SqlException)
+    {
+        Response.SetStatus(HttpStatusCode.NotFound);
+        Response.End();
+    }
+
+    if (IsPost)
+    {
+
+        var db = WebMatrix.Data.Database.Open("SCS");
+        var sql = ("update CLIENTE set nome=@0,cpf=@1,contato=@2,endereco=@3,bairro=@4,cidade=@5,DataEntrada=@6 where id_cli=@7");
+        int result = db.Execute(sql,
+            Request.Form["nome"],
+            Request.Form["cpf"],
+            Request.Form["contato"],
+            Request.Form["endereco"],
+            Request.Form["bairro"],
+            Request.Form["cidade"],
+             Request.Form["DataEntrada"],
+            Request.QueryString["id"]
+            );
+
+        db.Close();
+
+        if (result > 0)
+        {
+            Response.Redirect("~/Cliente.cshtml");
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+<style>
+    .panel-body {
+        width: 100%;
+    }
+
+    .panel-group {
+        width: 95%;
+    }
+</style>
+
+<div class="col-md-9 col-md-offset-0">
+    <div class="container">
+        <h2>Informações do Cliente</h2>
+        <br />
+       
+
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1"> <B> Dados pessoais do Cliente </B> ▼  </a>
+                    </h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <table class="table table-bordered table-striped">
+
+                            </tr>
+                            </thead>
+                            <tbody>
+
+
+                                <tr>
+                                    <td>
+                                        <form method="post" action="" enctype="multipart/form-data">
+
+
+                                            <form class="form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-2" for="email">Nome:</label>
+
+                                                    <input type="text" class="form-control" name="nome" id="nome" value="@cliente.nome" />
+
+                                                </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="Cpf">CPF:</label>
+
+                        <input type="text" class="form-control" name="cpf" id="cpf" value="@cliente.cpf" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="contato">Contato:</label>
+
+                    <input type="text" class="form-control" name="contato" id="contato" value="@cliente.contato" />
+
+                </div>
+            </div>
+
+
+
+            
+
+
+
+
+            </table>
+
+        </div>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">       <b>   Endereço do Cliente     ▼  </b> </a>
+        </h4>
+    </div>
+    <div id="collapse2" class="panel-collapse collapse">
+        <div class="panel-body">
+            <table class="table table-bordered table-striped">
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="endereco">Endereço:</label>
+
+                    <input type="text" class="form-control" name="endereco" id="endereco" value="@cliente.endereco" />
+
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="bairro">Bairro:</label>
+
+            <input type="text" class="form-control" name="bairro" id="bairro" value="@cliente.bairro" />
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="cidade">Cidade:</label>
+
+        <input type="text" class="form-control" name="cidade" id="cidade" value="@cliente.cidade" />
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3"><b>  Informações sobre Ordem de Serviço       ▼    </b>     </a>
+        </h4>
+    </div>
+    <div id="collapse3" class="panel-collapse collapse">
+        <div class="panel-body">
+            <table class="table table-bordered table-striped"></table>
+
+        </div>
+    </div>
+</div>
+        </div>
+    </div>
+<a href="~/Cliente.cshtml"><button type="button" class="btn btn-default ">Voltar </button></a>

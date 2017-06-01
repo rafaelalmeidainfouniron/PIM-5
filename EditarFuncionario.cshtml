@@ -1,0 +1,124 @@
+﻿@{
+    Layout = "_Layout.cshtml";
+    string id_func = Request.QueryString["id"];
+    if (id_func == null)
+    {
+        Response.Redirect("/");
+    }
+
+    var conexão = WebMatrix.Data.Database.Open("SCS");
+
+    dynamic funcionario = null;
+
+    try
+    {
+        funcionario = conexão.QuerySingle("SELECT * from Funcionario where id_func=@0", id_func);
+
+    }
+
+    catch (System.Data.SqlClient.SqlException)
+    {
+        Response.SetStatus(HttpStatusCode.NotFound);
+        Response.End();
+    }
+
+    if (IsPost)
+    {
+
+        var db = WebMatrix.Data.Database.Open("SCS");
+        var sql = ("update Funcionario set nome=@0,cpf=@1,contato=@2,endereco=@3,bairro=@4,cidade=@5, niveldeacesso=@6 where id_func=@7");
+        int result = db.Execute(sql,
+            Request.Form["nome"],
+            Request.Form["cpf"],
+            Request.Form["contato"],
+            Request.Form["endereco"],
+            Request.Form["bairro"],
+            Request.Form["cidade"],
+            Request.Form["niveldeacesso"], 
+            Request.QueryString["id"]
+            );
+
+        db.Close();
+
+        if (result > 0)
+        {
+            Response.Redirect("~/Funcionario.cshtml");
+        }
+    }
+}
+
+<div class="container">
+    <div class="col-md-9 col-md-offset-0">
+        <table class="table">
+            <thead>
+                <tr>
+                    <h2> Atualizar Funcionário</h2>
+
+                </tr>
+            </thead>
+            <tbody>
+
+
+                <tr>
+                    <td>
+                        <form method="post" action="" enctype="multipart/form-data">
+
+
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="email">Nome:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="nome" id="nome" value="@funcionario.nome" />
+                                        <br />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="Cpf">CPF:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="cpf" id="cpf" value="@funcionario.cpf" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="contato">Contato:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="contato" id="contato" value="@funcionario.contato" />
+                                        <br />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="endereco">Endereço:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="endereco" id="endereco" value="@funcionario.endereco" />
+                                        <br />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="bairro">Bairro:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="bairro" id="bairro" value="@funcionario.bairro" />
+                                        <br />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="cidade">Cidade:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="cidade" id="cidade" value="@funcionario.cidade" />
+                                        <br />
+                                            </div>
+                                        </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="bairro">Nivel de Acesso:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="niveldeacesso" id="niveldeacesso" value="@funcionario.niveldeacesso" />
+                                        <br />
+                                    </div>
+                                </div>
+                                <div style="text-align: right">
+                                    <button type="submit" class="btn btn-success" onclick="alert('Cadastro Alterado com Sucesso!')" name="submit">Editar</button>
+
+                                    <a href="~/Funcionario.cshtml"><button type="button" class="btn btn-default ">Cancelar</button></a>
+                                </div>
+                                </div>
+                            </form>
+
+                        </form>

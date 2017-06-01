@@ -1,0 +1,240 @@
+﻿@{
+    string nomeArquivo = "";
+    string ext = "";
+
+
+
+    Validation.RequireField("id_cli", "O nome é obrigatorio");
+    Validation.RequireField("id_func", "O Contato é obrigatorio");
+    Validation.RequireField("dataEntrada", "O CPF é obrigatorio");
+    Validation.RequireField("dataSaida", "O Endereço é obrigatorio");
+    Validation.RequireField("status", "O Bairro é obrigatorio");
+    Validation.RequireField("idequi", "A cidade é obrigatorio");
+    Validation.RequireField("id_serv", "A cidade é obrigatorio");
+    Validation.RequireField("valor_Total", "A cidade é obrigatorio");
+    
+
+
+    if (IsPost && Validation.IsValid())
+    {
+
+        var db = WebMatrix.Data.Database.Open("SCS");
+        var Sql = "insert into ORDEM_DE_SERVICO(Id_cli,Id_func,DataEntrada,DataSaida,Status,Idequi,Id_serv,Valor_Total) values(@0, @1, @2,@3,@4,@5,@6,@7)";
+        int result = db.Execute(Sql,
+            Request.Form["id_cli"],
+            Request.Form["id_func"],
+            Request.Form["dataEntrada"],
+            Request.Form["dataSaida"],
+            Request.Form["status"],
+            Request.Form["idequi"],
+            Request.Form["id_serv"],
+            Request.Form["valor_Total"]);
+        db.Close();
+        if (result == 1)
+        {
+            Response.Redirect("~/cliente");
+        }
+
+    }
+    Page.Title = "Página Detalhe";
+    Layout = "_Layout.cshtml";
+
+
+}
+@nomeArquivo
+@ext
+@Html.ValidationSummary()
+
+<script>
+        function duplicarCampos() {
+            var clone = document.getElementById('origem').cloneNode(true);
+            var destino = document.getElementById('destino');
+            destino.appendChild(clone);
+    }
+
+    function removerCampos(id) {
+        var node1 = document.getElementById('destino');
+        node1.removeChild(node1.childNodes[0]);
+    }
+
+    function duplicarServico() {
+        var clonado = document.getElementById('dpservico').cloneNode(true);
+        var destinoclonado = document.getElementById('rcservico');
+        destinoclonado.appendChild(clonado);
+    }
+    function removerServico(id) {
+        var node1 = document.getElementById('rcservico');
+        node1.removeChild(node1.childNodes[0]);
+    }
+
+
+</script>
+<tr>
+    <td>
+        <form>
+            <div class="container">
+                <div class="col-md-10 col-md-offset-0">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th> Dados Gerais</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            <tr>
+                                <td>
+
+
+
+
+                                    <div class="col-md-13">
+                                        <form method="post" action="">
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="email">Cliente:</label>
+                                                        <input type="text" class="form-control" name="id_cli" id="nome">
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="email">Tecnico / Responsavel:</label>
+                                                        <input type="text" class="form-control" name="id_func" id="id_func">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="dataDeNacimento">Data de Inicial</label>
+                                                <input type="date" class="form-control" name="dataEntrada" id="dataEntrada">
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="dataDeNacimento">Data de Final</label>
+                                                <input type="date" class="form-control" name="dataSaida" id="dataSaida">
+                                            </div>
+                                    </div>
+                                    <legend></legend>
+
+                                    <div id="origem">
+                                        <p align="left"> <b>Descrição do Produto</b></p>
+                                        <form>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="idequi">Equipamento:</label>
+                                                        <input type="text" class="form-control" name="idequi" id="idequi">
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="email">Marca:</label>
+                                                        <input type="text" class="form-control" id="marca">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="email">Modelo:</label>
+                                                        <input type="text" class="form-control" id="modelo">
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="email">Laudo Tenico:</label>
+                                                        <input type="text" class="form-control" id="laudotecnico">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="email">Defeito:</label>
+                                                        <input type="text" class="form-control" id="defeito">
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="email">Solução:</label>
+                                                        <input type="text" class="form-control" id="solucao">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <legend></legend>
+                                            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo" onclick="duplicarCampos()">+ Adicionar </button>
+                                            <button type="button" class="btn btn-danger" onclick="removerCampos(id)">Remover</button>
+
+                                    </div>
+                                    <div id="destino">
+
+                                    </div>
+
+                                    <div id="dpservico">
+                                        <p align="left"> <b>Serviço</b></p>
+                                        <form>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="id_serv">Serviço:</label>
+                                                        <input type="text" class="form-control" name="id_serv" id="id_serv">
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="email">Valor:</label>
+                                                        <input type="text" class="form-control" name="id_serv" id="id_serv">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="email">Observação:</label>
+                                                        <input type="text" class="form-control" name="id_serv" id="id_serv">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="form-group">
+                                                        <label for="status">Status:</label>
+                                                        <input type="text" class="form-control" name="status" id="status">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo" onclick="duplicarServico()">+ Adicionar </button>
+                                            <button type="button" class="btn btn-danger" onclick="removerServico(id)">Remover</button>
+
+                                            <br />
+
+                                    </div>
+
+                
+
+                <div id="rcservico">
+
+                </div>
+            </div>
+                <br/>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-success"> Salvar</button>
+
+                        <button type="reset" class="btn btn-default" name="reset">Limpar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+
+
+                                                </body>
+                                                </html>

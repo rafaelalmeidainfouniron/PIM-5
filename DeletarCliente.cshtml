@@ -1,0 +1,126 @@
+﻿
+@{
+    Layout = "_Layout.cshtml";
+    string id_cli = Request.QueryString["id"];
+    if (id_cli == null)
+    {
+        Response.Redirect("/");
+    }
+
+    var conexão = WebMatrix.Data.Database.Open("SCS");
+
+    dynamic cliente = null;
+
+    try
+    {
+        cliente = conexão.QuerySingle("SELECT * from CLIENTE where id_cli=@0", id_cli);
+    }
+
+    catch (System.Data.SqlClient.SqlException)
+    {
+        Response.SetStatus(HttpStatusCode.NotFound);
+        Response.End();
+    }
+
+    if (IsPost)
+    {
+        var db = WebMatrix.Data.Database.Open("SCS");
+        var Sql = ("delete from CLIENTE where id_cli=@6");
+        int result = db.Execute(Sql,
+            Request.Form["nome"],
+            Request.Form["cpf"],
+            Request.QueryString["contato"],
+            Request.Form["endereco"],
+            Request.Form["bairro"],
+            Request.Form["cidade"],
+            Request.QueryString["id"]
+            );
+        db.Close();
+
+
+        if (result > 0)
+        {
+            Response.Redirect("~/Cliente.cshtml");
+        }
+    }
+
+
+}
+
+
+ 
+
+
+<form method="post" action="">
+
+    <h2>Deseja realmente remover o Cliente?</h2>
+    <div class="container">
+        <div class="col-md-9 col-md-offset-0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                    <tr>
+                        <td>
+                            <form method="post" action="" enctype="multipart/form-data">
+
+
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="nome">Nome:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="nome" id="nome" value="@cliente.nome" />
+                                            <br />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="Cpf">CPF:</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="cpf" id="cpf" value="@cliente.cpf" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="contato">Contato:</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" name="contato" id="contato" value="@cliente.contato" />
+                                            <br />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="endereco">Endereço:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="endereco" id="endereco" value="@cliente.endereco" />
+                                            <br />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="bairro">Bairro:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="bairro" id="bairro" value="@cliente.bairro" />
+                                            <br />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="cidade">Cidade:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="cidade" id="cidade" value="@cliente.cidade" />
+                                            <div class="form-group">
+                                                <div class="col-sm-offset-2 col-sm-10">
+                                                    <br />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="text-align: right">
+                                            <button type="submit" class="btn btn-danger" onclick="alert('Usuario Excluido com Sucesso!')" name="submit">Excluir</button>
+                                            <a href="~/Cliente.cshtml"><button type="button" class="btn btn-default ">Cancelar</button></a>
+                                          
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </form>

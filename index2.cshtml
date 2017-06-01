@@ -1,0 +1,165 @@
+﻿@{
+    Layout = "_Layout.cshtml";
+    var conexão = WebMatrix.Data.Database.Open("SCS");
+    var cliente = conexão.Query("select * from CLIENTE");
+    var funcionario = conexão.Query("select * from FUNCIONARIO");
+    var servico = conexão.Query("select * from SERVICO");
+    conexão.Close();
+}
+
+<style>
+    #acoes {
+        width: 30%;
+    }
+
+    .panel-body {
+        width: 100%;
+    }
+
+    .panel-group {
+        width: 95%;
+    }
+
+    #acoes {
+        width: 15%;
+    }
+</style>
+
+<div class="col-md-9 col-md-offset-0">
+    <div class="container">
+        <h2>Acesso Rapido</h2>
+
+
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Informações sobre os clientes ▼  </a>
+                    </h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="nome">Nome:</th>
+                                    <th id="cpf">CPF:</th>
+                                    <th id="contato">Contato:</th>
+
+
+                                    <th id="acoes">Status</th>
+
+                                </tr>
+                            </thead>
+                            @foreach (var c in cliente)
+                            {
+                                <tr>
+                                    <td>@c.nome</td>
+                                    <td>@c.cpf</td>
+                                    <td>@c.contato</td>
+
+
+                                    <td class="btnAcoes">
+                                        <a href="~/DetalheCliente.cshtml?id=@c.id_cli"><button type="button" class="glyphicon glyphicon-eye-open btn btn-default"></button></a>
+                                        <a href="~/EditarCliente.cshtml?id=@c.id_cli"><button type="button" class=" glyphicon glyphicon-pencil btn btn-primary"></button></a>
+                                        <a href="~/DeletarCliente.cshtml?id=@c.id_cli"><button type="button" class=" glyphicon glyphicon-remove btn btn-danger"></button></a>
+
+                                    </td>
+                                </tr>
+
+
+
+
+                            }
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Informações sobre os Funcionarios   ▼  </a>
+                    </h4>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Contato</th>
+                                    <th>Nivel de Acesso</th>
+                                    <th id="acoes">Status</th>
+
+                                </tr>
+                            </thead>
+                            @foreach (var f in funcionario)
+                            {
+                                <tr class="odd gradeX">
+                                    <td>@f.Nome</td>
+                                    <td>@f.Contato</td>
+                                    <td>@f.NivelDeAcesso</td>
+
+                                    <td class="btnAcoes">
+                                        <a href="~/DetalheFuncionario.cshtml?id=@f.id_func"><button type="button" class="glyphicon glyphicon-eye-open btn btn-default   "></button></a>
+                                        <a href="~/EditarFuncionario.cshtml?id=@f.id_func"><button type="button" class="glyphicon glyphicon-pencil   btn btn-primary  "></button></a>
+                                        <a href="~/DeletarFuncionario.cshtml?id=@f.id_func"><button type="button" class=" glyphicon glyphicon-remove btn btn-danger "></button></a>
+
+                                    </td>
+
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3"> <b>       </b>   Informações sobre Serviço   ▼   </a>
+                    </h4>
+                </div>
+                <div id="collapse3" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th id="nome">Descricão</th>
+                                    <th id="valor">Valor</th>
+                                    <th id="observacao">Observação</th>
+
+                                    <th id="acoes">Status</th>
+
+                                </tr>
+                            </thead>
+                            @foreach (var s in servico)
+                            {
+                                <tr>
+                                    <td>@s.descricao</td>
+                                    <td>R$: @s.valor</td>
+                                    <td>@s.observacao</td>
+
+                                    <td class="btnAcoes">
+
+                                        <a href="~/EditarServico.cshtml?id=@s.id_serv"><button type="button" class=" glyphicon glyphicon-pencil btn btn-primary "></button></a>
+                                        <a href="~/DeletarServico.cshtml?id=@s.id_serv"><button type="button" class=" glyphicon glyphicon-remove btn btn-danger "></button></a>
+
+
+                                    </td>
+                                </tr>
+
+
+
+
+                            }
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+

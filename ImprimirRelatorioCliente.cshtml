@@ -1,0 +1,6 @@
+﻿@{
+    Layout = "_Layout.cshtml";
+    var conexão = WebMatrix.Data.Database.Open("SCS");
+    var cliente = conexão.Query("select * from CLIENTE");
+    conexão.Close();
+}

@@ -1,0 +1,136 @@
+﻿@{
+    string nomeArquivo = "";
+    string ext = "";
+
+
+
+    Validation.RequireField("nome", "O nome é obrigatorio");
+
+    Validation.RequireField("Endereco", "O Endereço é obrigatorio");
+    Validation.RequireField("Bairro", "O Bairro é obrigatorio");
+    Validation.RequireField("Cidade", "A cidade é obrigatorio");
+
+
+    if (IsPost && Validation.IsValid())
+    {
+
+        var db = WebMatrix.Data.Database.Open("SCS");
+        var Sql = "insert into Cliente(Nome,cpf,Contato,Endereco,Bairro,Cidade,DataEntrada) values(@0, @1, @2,@3,@4,@5,@6)";
+        int result = db.Execute(Sql,
+            Request.Form["nome"],
+            Request.Form["cpf"],
+            Request.Form["contato"],
+            Request.Form["endereco"],
+            Request.Form["bairro"],
+            Request.Form["cidade"],
+            Request.Form["DataEntrada"]);
+        db.Close();
+        if (result == 1)
+        {
+            Response.Redirect("~/cliente");
+        }
+
+    }
+    Page.Title = "Página Detalhe";
+    Layout = "_Layout.cshtml";
+
+
+}
+@nomeArquivo
+@ext
+@Html.ValidationSummary()
+
+
+
+
+        <div class="container">
+            <div class="col-md-9 col-md-offset-0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <h2> Adicionar Cliente</h2>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        <tr>
+                            <td>
+                                <form id="form1" role="form" action="" method="post">
+
+
+                                    <form class="form-horizontal">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2" for="email">Nome:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="nome" id="nome" placeholder="informe o nome...">
+                                                <br />
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2" for="Cpf">CPF:</label>
+                                            <div class="col-sm-4">
+
+                                                <input type="text" class="form-control" name="cpf" onblur="ValidarCPF(form1.cpf);" onkeypress="MascaraCPF(form1.cpf);" maxlength="14" placeholder="000.000.000-00">
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2" for="contato">Contato:</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" name="contato" onkeypress="MascaraTelefone(form1.contato);" maxlength="14" onblur="ValidaTelefone(form1.contato);" placeholder="(00)00000-0000">
+                                                <br />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2" for="endereco">Endereço:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="endereco" id="endereco" placeholder="informe o endereco...">
+                                                <br />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2" for="bairro">Bairro:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="bairro" id="bairro" placeholder="informe o bairro...">
+                                                <br />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2" for="cidade">Cidade:</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="cidade" id="cidade" placeholder="informe o cidade...">
+                                                <div class="form-group">
+                                                    <div class="col-sm-offset-2 col-sm-10">
+                                                        <br />
+                                                    </div>
+                                                </div>
+                                               
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-2" for="dataEntrada">Data do Cadastro:</label>
+                                                <div class="col-sm-10">
+                                                    <input type="date" class="form-control" name="dataEntrada" id="dataEntrada">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-offset-2 col-sm-10">
+                                                            <br />
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div style="text-align: right">
+                                                    <button type="submit" class="btn btn-success" onclick="alert('Cadastro Salvo com Sucesso!')" name="submit">Salvar</button>
+
+                                                    <a href="~/Cliente.cshtml"><button type="button" class="btn btn-default ">Cancelar</button></a>
+                                                </div>
+</form>
+
+
+</div>
+                                        </div>
+                                 
+           

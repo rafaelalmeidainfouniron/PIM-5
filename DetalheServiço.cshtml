@@ -1,0 +1,65 @@
+﻿@{
+
+    Layout = "_Layout.cshtml";
+
+    string IdServico = Request.QueryString["id_serv"];
+
+    if (IdServico == null)
+    {
+        Response.Redirect("/");
+    }
+
+    var conexão = WebMatrix.Data.Database.Open("SCS");
+
+    dynamic servico = null;
+
+    try
+    {
+        servico = conexão.QuerySingle("SELECT * FROM SERVICO WHERE id_serv = @0", IdServico);
+    }
+    catch (System.Data.SqlClient.SqlException e)
+    {
+        Response.SetStatus(HttpStatusCode.NotFound);
+        Response.End();
+    }
+
+    conexão.Close();
+}
+
+<div class="col-lg-10">
+    <h1> Dados do Serviço </h1>
+
+
+
+    </p>
+    <br />
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Observação</th>
+                <th>Status</th>
+              
+
+            </tr>
+        </thead>
+
+
+        <tr>
+            <td>@servico.Descricao</td>
+            <td><b> R$:</b> @servico.Valor</td>
+            <td>@servico.Observacao</td>
+           
+
+
+            <td class="btnAcoes">
+                <a href="#"><button type="button" class="btn btn-info">Atualizar</button></a>
+                <a href="~/DeletarServico.cshtml?id_serv=@servico.id_serv" /><button type="button" class="btn btn-danger">Remover</button></a>
+
+
+              
+
+            </td>
+        </tr>

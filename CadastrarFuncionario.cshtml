@@ -1,0 +1,131 @@
+﻿@{
+    string nomeArquivo = "";
+    string ext = "";
+
+
+
+    Validation.RequireField("nome", "O nome do Funcionário é obrigatorio");
+    Validation.RequireField("Contato", "O Contato do Funcionário é obrigatorio");
+    Validation.RequireField("CPF", "O CPF do Funcionário é obrigatorio");
+    Validation.RequireField("Endereco", "O Endereço do Funcionário é obrigatorio");
+    Validation.RequireField("Bairro", "O Bairro do Funcionário é obrigatorio");
+    Validation.RequireField("Cidade", "A cidade do Funcionário é obrigatorio");
+    Validation.RequireField("NivelDeAcesso", "O Nivel De Acesso do Funcionário é obrigatorio");
+
+
+    if (IsPost && Validation.IsValid())
+    {
+
+
+        var db = WebMatrix.Data.Database.Open("SCS");
+        var Sql = "insert into FUNCIONARIO(Nome,cpf,Contato,Endereco,Bairro,Cidade,NivelDeAcesso) values(@0, @1, @2,@3,@4,@5,@6)";
+        int result = db.Execute(Sql,
+            Request.Form["nome"],
+            Request.Form["cpf"],
+            Request.Form["contato"],
+            Request.Form["endereco"],
+            Request.Form["bairro"],
+            Request.Form["cidade"],
+            Request.Form["niveldeacesso"],
+            Request.QueryString["id"]
+            );
+        db.Close();
+        if (result == 1)
+        {
+            Response.Redirect("~/funcionario");
+        }
+
+    }
+    Page.Title = "Página Detalhe ";
+    Layout = "_Layout.cshtml";
+
+
+}
+@nomeArquivo
+@ext
+@Html.ValidationSummary()
+<div class="container">
+    <div class="col-md-9 col-md-offset-0">
+        <table class="table">
+            <thead>
+                <tr>
+                    <h2> Adicionar Funcionário </h2>
+
+                </tr>
+            </thead>
+            <tbody>
+
+
+                <tr>
+                    <td>
+                        <form method="post" action="">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="email">Nome:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="nome" id="nome" placeholder="informe o nome...">
+                                        <br />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="Cpf">CPF:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="cpf" id="cpf" placeholder="Informe o CPF...">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="contato">Contato:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="contato" id="contato" placeholder="informe o Numero...">
+                                        <br />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="endereco">Endereço:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="endereco" id="endereco" placeholder="informe o endereco...">
+                                        <br />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="bairro">Bairro:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="bairro" id="bairro" placeholder="informe o bairro...">
+                                        <br />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="cidade">Cidade:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="cidade" id="cidade" placeholder="informe o cidade...">
+                                        
+                                                <br />
+                                            </div>
+                                        </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="niveldeacesso">Nivel de Acesso:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="niveldeacesso" id="niveldeacesso"  placeholder="informe o nivel de acesso ...">
+                                        <br />
+                                    </div>
+                                </div>
+
+
+                                       
+
+                                        
+                                                <br />
+
+                                            </div>
+
+                                        </div>
+                                      <div style="text-align: right">
+    <button type="submit" class="btn btn-success" onclick="alert('Cadastro Salvo com Sucesso!')" name="submit">Salvar</button>
+
+    <a href="~/Funcionario.cshtml"><button type="button" class="btn btn-default ">Cancelar</button></a>
+</div>
+                                        </div>
+                                    </div>
+                            </form>
+                        </form>

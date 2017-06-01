@@ -1,0 +1,32 @@
+﻿@{
+    var id_cli = Request.Form["id_cli"];
+    var nome = Request.Form["nome"];
+    var cpf = Request.Form["cpf"];
+    var contato = Request.Form["contato"];
+    var endereco = Request.Form["endereco"];
+    var bairro = Request.Form["bairro"];
+    var cidade = Request.Form["cidade"];
+   
+
+    var conexão = Database.Open("SCS");
+
+    int resultado = conexão.Execute(@"
+  UPDATE CLIENTE SET
+  nome     = @0,
+  cpf      = @1,
+  contato    = @2,
+  endereco    = @3,
+  bairro    = @4,
+  cidade    = @5,
+
+  
+  WHERE
+    id_cli = @5", nome, cpf, contato, endereco, bairro,cidade,id_cli);
+
+    if (resultado == 1)
+    {
+        Session["mensagem"] = "Registro Atualizado com sucesso!";
+        Response.Redirect("Index");
+
+    }
+}

@@ -1,0 +1,67 @@
+﻿@{
+    Layout = "_layout.cshtml";
+    var conexão = WebMatrix.Data.Database.Open("SCS");
+
+    var ordemdeserviço = conexão.Query("select * from Ordem_De_Servico");
+
+    conexão.Close();
+} 
+
+<div class="col-lg-10">
+    <h1> Ordem de Serviço </h1>
+
+    <style>
+        .botao {
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+
+    <p class="botao">
+
+
+        <a href="~/CadastrarOrdemdeServiço.cshtml" class="btn btn-success"> ✚ Adicionar Ordem de Serviço</a>
+
+    </p>
+    <br />
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th class="nome-cliente">Nome do Cliente</th>
+                <th class="telefone-cliente">Serviço</th>
+                <th class="CPF">Funcionario</th>
+                <th class="nome-cliente">Celular</th>
+                <th class="telefone-cliente">Data</th>
+                <th class="CPF"> Valor Total</th>
+
+                <th data-orderable="false" id="acoes">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var o in ordemdeserviço)
+            {
+                <tr class="odd gradeX">
+                    <td>@o.id_cli</td>
+                    <td>@o.id_serv</td>
+                    <td>@o.id_func</td>
+                    <td>@o.id_cel</td>
+                    <td>@o.data</td>
+                    <td>@o.Valor_Total</td>
+                    <td class="btnAcoes">
+
+                        <a href="#"><button type="button" class="btn btn-info">Editar</button></a>
+                        <a href="#"><button type="button" class="btn btn-danger">Excluir</button></a>
+                    </td>
+
+                </tr>
+            }
+</table>
+</div>
+
+<br />
+  
+
+

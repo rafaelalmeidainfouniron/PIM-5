@@ -1,0 +1,78 @@
+﻿ 
+    /* Remove the navbar's default margin-bottom and rounded borders */
+    body{
+        
+    }
+    .navbar {
+        background-color: #2E363F;
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 1050px}
+
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #2E363F;
+      height: 100%;
+    }
+    .sidenav label {
+              display: block;
+            padding: 10px;
+            background-color: #2E363F;
+            font-size: 15px;
+            cursor: pointer;
+            color: #fff; 
+            border-bottom: solid 2px #aaa; 
+        } 
+    .sidenav label:hover{
+            background-color: #9CF;
+        }
+        .sidenav ul{
+            width: 100%; 
+            list-style: none;
+            overflow: hidden;
+            max-height: 0;
+            transition: all .4s linear;
+        } 
+         .sidenav input{
+            display: none; 
+        }
+        .sidenav ul li a{
+            width: 100%;
+            height: 50px;
+            padding: 10px;
+            display: block;
+            font-size: 15px;
+            text-decoration: none;
+            background-color:#2E363F;
+            color: #fafafa;
+            border-bottom: solid 2px #aaa;
+          
+        } 
+        .sidenav ul li a:hover{
+            background-color: #9CF;
+        }
+        .sidenav input:checked ~ ul{
+            height: auto;
+            max-height: 200px;
+            transform: all;
+        }
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #2E363F;
+      color: white;
+      padding: 5px;
+    }
+
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;}
+    }
+    

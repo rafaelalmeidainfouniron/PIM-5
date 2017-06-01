@@ -1,0 +1,71 @@
+﻿@{
+    Layout = "_LayoutTabela.cshtml";
+    var conexão = WebMatrix.Data.Database.Open("SCS");
+
+    var servico = conexão.Query("select * from SERVICO");
+
+    conexão.Close();
+}
+
+
+<div class="col-lg-10">
+    <h1> Serviço </h1>
+
+    <style>
+        .botao {
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            margin: 0px;
+            padding: 0px;
+        }
+        #acoes {
+            width: 15%;
+        }
+
+
+    </style>
+
+    <p class="botao">
+
+
+        <a href="~/CadastrarServiço.cshtml" class="btn btn-success"> ✚ Adicionar Serviço</a>
+
+    </p>
+    <br />
+    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+        <thead>
+            <tr>
+                <th id="nome">Descricão</th>
+                <th id="valor">Valor</th>
+                <th id="observacao">Observação</th>
+
+                <th id="acoes">Status</th>
+
+            </tr>
+        </thead>
+        @foreach (var s in servico)
+        {
+            <tr>
+                <td>@s.descricao</td>
+                <td>R$: @s.valor</td>
+                <td>@s.observacao</td>
+
+                <td class="btnAcoes">
+
+                    <a href="~/EditarServico.cshtml?id=@s.id_serv"><button type="button" class="glyphicon glyphicon-pencil   btn btn-primary"></button></a>
+                    <a href="~/DeletarServico.cshtml?id=@s.id_serv"><button type="button" class=" glyphicon glyphicon-remove btn btn-danger "></button></a>
+
+
+                </td>
+            </tr>
+
+
+
+
+        }
+    </table>
+
+</div>
+<br />
+
